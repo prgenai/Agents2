@@ -1,0 +1,32 @@
+laudebot (now officially renamed OpenClaw), a self-hosted AI assistant that runs directly on your computer.
+
+What is Claudebot (OpenClaw)?
+Unlike typical browser-based AI, Claudebot is a 24/7 assistant that lives on your machine.
+
+Computer Control: It can control your entire machine, including browsers, Google Docs, Notion, and system files [02:37].
+
+Infinite Memory: It saves every interaction to build a complex memory system, allowing it to remember your preferences and past tasks [03:07].
+
+Messaging Interface: You communicate with it via apps like Telegram, WhatsApp, or Discord [03:21].
+
+---
+OpenClaw has been labeled a "security nightmare" by researchers primarily because it combines unrestricted system access with untrusted external inputs, creating a "lethal trifecta" for exploitation. 
+The specific reasons researchers have flagged it include:
+1. "Agentic Trojan Horse" (Malicious Skills) 
+The ClawHub marketplace, where users download "skills" (extensions) for the agent, became a major delivery vehicle for malware. 
+Credential Theft: Hundreds of malicious skills, such as "Twitter" or "What Would Elon Do?", were found to secretly exfiltrate passwords, API keys, and session tokens to attacker-controlled servers.
+Malware Delivery: Some skills were designed to download and execute Atomic Stealer (AMOS), a macOS-specific malware that raids browser cookies, saved credentials, and crypto wallets.
+Manufactured Popularity: Attackers manipulated rankings to make malicious skills appear as the #1 most-downloaded tools. 
+2. Critical Vulnerabilities (CVEs)
+Several high-severity security flaws were discovered shortly after its viral rise: 
+1-Click Remote Code Execution (CVE-2026-25253): A flaw in the Control UI allowed attackers to steal a user's authentication token simply if the user clicked a malicious link. This gave the attacker full control over the AI agent, even if it was running only on the local machine.
+WebSocket Hijacking: The system failed to validate "origin headers," meaning a malicious website could silently connect to a local OpenClaw instance and issue commands. 
+3. Insecure-by-Design Defaults
+Researchers found that the project prioritized "vibe-coded" convenience over security discipline: 
+Public Exposure: By default, OpenClaw bound its interface to 0.0.0.0, making it accessible to the entire internet unless manually restricted. This led to over 40,000 instances being discovered wide-open on search engines like Shodan.
+Plaintext Secrets: API keys and messaging tokens were often stored in plaintext files (like .env) on the host machine, making them easy targets for any successful breach.
+No "Guardrail" Chokepoint: The system lacked a central security layer to filter commands, relying instead on the AI model itself to "decide" if a command was safe—a process easily bypassed by prompt injection. 
+4. Supply Chain & Identity Risks
+Rebrand Chaos: During its rapid name changes (Clawdbot → Moltbot → OpenClaw), attackers registered the abandoned names and repositories to distribute "poisoned" versions of the software to confused users.
+Shadow AI: In corporate environments, employees installing OpenClaw created "invisible backdoors" that bypassed traditional firewalls and security monitors
+
