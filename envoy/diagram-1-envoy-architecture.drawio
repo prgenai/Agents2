@@ -1,0 +1,73 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.0.9 Chrome/128.0.6613.186 Electron/32.2.5 Safari/537.36" version="26.0.9">
+  <diagram name="Envoy AI Gateway Architecture" id="0">
+    <mxGraphModel dx="1242" dy="793" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="1">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="2" value="Envoy AI Gateway — Architecture" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=20;fontStyle=1;fontColor=#1e3a8a;" parent="1" vertex="1">
+          <mxGeometry x="100" y="20" width="600" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="3" value="All apps call one URL — Envoy handles routing, credentials, and cost control" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=12;fontColor=#64748b;" parent="1" vertex="1">
+          <mxGeometry x="100" y="55" width="600" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="10" value="&lt;b&gt;Chatbot App&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#64748b&quot; style=&quot;font-size:10px;&quot;&gt;Kubernetes Pod&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dbeafe;strokeColor=#3b82f6;fontColor=#1e3a8a;fontSize=12;shadow=1;arcSize=20;" parent="1" vertex="1">
+          <mxGeometry x="40" y="100" width="145" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="11" value="&lt;b&gt;RAG Service&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#64748b&quot; style=&quot;font-size:10px;&quot;&gt;Kubernetes Pod&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dbeafe;strokeColor=#3b82f6;fontColor=#1e3a8a;fontSize=12;shadow=1;arcSize=20;" parent="1" vertex="1">
+          <mxGeometry x="215" y="100" width="145" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="12" value="&lt;b&gt;AI Agent&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#64748b&quot; style=&quot;font-size:10px;&quot;&gt;Kubernetes Pod&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dbeafe;strokeColor=#3b82f6;fontColor=#1e3a8a;fontSize=12;shadow=1;arcSize=20;" parent="1" vertex="1">
+          <mxGeometry x="390" y="100" width="145" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="13" value="&lt;b&gt;Internal Tool&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#64748b&quot; style=&quot;font-size:10px;&quot;&gt;Kubernetes Pod&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dbeafe;strokeColor=#3b82f6;fontColor=#1e3a8a;fontSize=12;shadow=1;arcSize=20;" parent="1" vertex="1">
+          <mxGeometry x="565" y="100" width="145" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="20" value="&lt;b style=&quot;font-size:16px;&quot;&gt;Envoy AI Gateway&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px;&quot;&gt;Routing  ·  Credential Injection  ·  Token Budgets per Team&lt;/font&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px;&quot;&gt;Format Translation  ·  Audit Logs  ·  Prometheus Metrics&lt;/font&gt;&lt;br&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px;opacity:0.8;&quot;&gt;Centralized Gateway Pods — Kubernetes Service&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1d4ed8;gradientColor=#3b82f6;strokeColor=#1e40af;fontColor=#ffffff;fontSize=12;shadow=1;arcSize=8;verticalAlign=middle;" parent="1" vertex="1">
+          <mxGeometry x="145" y="240" width="460" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="30" value="&lt;b&gt;OpenAI&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px;&quot;&gt;GPT-4, GPT-4o&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0f172a;strokeColor=#3b82f6;fontColor=#93c5fd;fontSize=12;shadow=1;arcSize=20;" parent="1" vertex="1">
+          <mxGeometry x="20" y="440" width="135" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="31" value="&lt;b&gt;AWS Bedrock&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px;&quot;&gt;Claude · Llama&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0f172a;strokeColor=#3b82f6;fontColor=#93c5fd;fontSize=12;shadow=1;arcSize=20;" parent="1" vertex="1">
+          <mxGeometry x="170" y="440" width="135" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="32" value="&lt;b&gt;Google Vertex&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px;&quot;&gt;Gemini · PaLM&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0f172a;strokeColor=#3b82f6;fontColor=#93c5fd;fontSize=12;shadow=1;arcSize=20;" parent="1" vertex="1">
+          <mxGeometry x="320" y="440" width="135" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="33" value="&lt;b&gt;Anthropic&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px;&quot;&gt;Claude 3.x&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0f172a;strokeColor=#3b82f6;fontColor=#93c5fd;fontSize=12;shadow=1;arcSize=20;" parent="1" vertex="1">
+          <mxGeometry x="470" y="440" width="135" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="34" value="&lt;b&gt;vLLM / GPU&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px;&quot;&gt;Self-hosted&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#064e3b;strokeColor=#10b981;fontColor=#34d399;fontSize=12;shadow=1;arcSize=20;" parent="1" vertex="1">
+          <mxGeometry x="620" y="440" width="135" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="40" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#3b82f6;strokeWidth=2;dashed=1;dashPattern=8 4;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.15;entryY=0;entryDx=0;entryDy=0;" parent="1" source="10" target="20" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="41" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#3b82f6;strokeWidth=2;dashed=1;dashPattern=8 4;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.35;entryY=0;entryDx=0;entryDy=0;" parent="1" source="11" target="20" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="42" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#3b82f6;strokeWidth=2;dashed=1;dashPattern=8 4;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.6;entryY=0;entryDx=0;entryDy=0;" parent="1" source="12" target="20" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="43" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#3b82f6;strokeWidth=2;dashed=1;dashPattern=8 4;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.82;entryY=0;entryDx=0;entryDy=0;" parent="1" source="13" target="20" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="50" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#10b981;strokeWidth=2;exitX=0.1;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="20" target="30" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="51" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#10b981;strokeWidth=2;exitX=0.28;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="20" target="31" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="52" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#10b981;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="20" target="32" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="53" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#10b981;strokeWidth=2;exitX=0.72;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="20" target="33" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="54" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#10b981;strokeWidth=2;dashed=1;exitX=0.9;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="20" target="34" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

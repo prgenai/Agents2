@@ -1,0 +1,196 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.0.9 Chrome/128.0.6613.186 Electron/32.2.5 Safari/537.36" version="26.0.9">
+  <diagram name="Istio vs Envoy AI Gateway" id="istio-envoy-analogy">
+    <mxGraphModel dx="1242" dy="793" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1400" pageHeight="950" math="0" shadow="1">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title1" value="Same Pattern — Different Traffic" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=22;fontStyle=1;fontColor=#0f172a;" parent="1" vertex="1">
+          <mxGeometry x="200" y="15" width="900" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="title2" value="Both Istio and Envoy AI Gateway are built on the same Envoy Proxy engine — they just control different types of traffic" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=12;fontColor=#64748b;" parent="1" vertex="1">
+          <mxGeometry x="150" y="52" width="1000" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="leftBg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f3ff;strokeColor=#8b5cf6;strokeWidth=2;arcSize=5;" parent="1" vertex="1">
+          <mxGeometry x="20" y="88" width="430" height="500" as="geometry" />
+        </mxCell>
+        <mxCell id="leftTitle" value="ISTIO — Service Mesh" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=15;fontStyle=1;fontColor=#5b21b6;" parent="1" vertex="1">
+          <mxGeometry x="20" y="95" width="430" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="leftSub" value="Controls traffic between microservices" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=11;fontColor=#7c3aed;" parent="1" vertex="1">
+          <mxGeometry x="20" y="122" width="430" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="isvc1" value="Auth Service" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ede9fe;strokeColor=#8b5cf6;fontColor=#4c1d95;fontSize=12;fontStyle=1;shadow=1;arcSize=20;" parent="1" vertex="1">
+          <mxGeometry x="45" y="158" width="110" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="isvc2" value="User Service" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ede9fe;strokeColor=#8b5cf6;fontColor=#4c1d95;fontSize=12;fontStyle=1;shadow=1;arcSize=20;" parent="1" vertex="1">
+          <mxGeometry x="195" y="158" width="110" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="isvc3" value="Order Service" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ede9fe;strokeColor=#8b5cf6;fontColor=#4c1d95;fontSize=12;fontStyle=1;shadow=1;arcSize=20;" parent="1" vertex="1">
+          <mxGeometry x="315" y="158" width="110" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="ia1" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#8b5cf6;strokeWidth=2;dashed=1;dashPattern=8 4;" parent="1" source="isvc1" target="iGateway" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ia2" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#8b5cf6;strokeWidth=2;dashed=1;dashPattern=8 4;" parent="1" source="isvc2" target="iGateway" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ia3" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#8b5cf6;strokeWidth=2;dashed=1;dashPattern=8 4;" parent="1" source="isvc3" target="iGateway" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="iGateway" value="&lt;b&gt;Istio Gateway&lt;/b&gt;&lt;br&gt;&lt;br&gt;Routing · mTLS · Rate Limiting&lt;br&gt;Circuit Breaking · Observability" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#6d28d9;gradientColor=#8b5cf6;strokeColor=#4c1d95;fontColor=#ffffff;fontSize=12;shadow=1;arcSize=8;" parent="1" vertex="1">
+          <mxGeometry x="90" y="270" width="280" height="88" as="geometry" />
+        </mxCell>
+        <mxCell id="id1" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#a78bfa;strokeWidth=2;" parent="1" source="iGateway" target="idsvc1" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="id2" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#a78bfa;strokeWidth=2;" parent="1" source="iGateway" target="idsvc2" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="id3" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#a78bfa;strokeWidth=2;" parent="1" source="iGateway" target="idsvc3" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="idsvc1" value="Payment Svc" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ede9fe;strokeColor=#8b5cf6;fontColor=#4c1d95;fontSize=11;fontStyle=1;shadow=1;arcSize=20;" parent="1" vertex="1">
+          <mxGeometry x="45" y="428" width="110" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="idsvc2" value="Notify Svc" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ede9fe;strokeColor=#8b5cf6;fontColor=#4c1d95;fontSize=11;fontStyle=1;shadow=1;arcSize=20;" parent="1" vertex="1">
+          <mxGeometry x="195" y="428" width="110" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="idsvc3" value="Report Svc" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ede9fe;strokeColor=#8b5cf6;fontColor=#4c1d95;fontSize=11;fontStyle=1;shadow=1;arcSize=20;" parent="1" vertex="1">
+          <mxGeometry x="315" y="428" width="110" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ifoot1" value="Controls: Service to Service traffic" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=11;fontStyle=1;fontColor=#5b21b6;" parent="1" vertex="1">
+          <mxGeometry x="20" y="482" width="430" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="ifoot2" value="Rate limit unit: Requests / second    |    Engine: Envoy Proxy" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=10;fontColor=#7c3aed;" parent="1" vertex="1">
+          <mxGeometry x="20" y="502" width="430" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="ifoot3" value="Deployment: Sidecar injected into every pod" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=10;fontColor=#7c3aed;" parent="1" vertex="1">
+          <mxGeometry x="20" y="520" width="430" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="ifoot4" value="Kubernetes config: VirtualService, RateLimitPolicy" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=10;fontColor=#7c3aed;" parent="1" vertex="1">
+          <mxGeometry x="20" y="540" width="430" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="midBox" value="Same&lt;br&gt;Envoy&lt;br&gt;Engine" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8fafc;strokeColor=#94a3b8;strokeWidth=2;fontSize=11;fontStyle=1;fontColor=#475569;shadow=1;" parent="1" vertex="1">
+          <mxGeometry x="482" y="300" width="72" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="rightBg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eff6ff;strokeColor=#3b82f6;strokeWidth=2;arcSize=5;" parent="1" vertex="1">
+          <mxGeometry x="590" y="88" width="430" height="500" as="geometry" />
+        </mxCell>
+        <mxCell id="rightTitle" value="ENVOY AI GATEWAY" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=15;fontStyle=1;fontColor=#1e40af;" parent="1" vertex="1">
+          <mxGeometry x="590" y="95" width="430" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="rightSub" value="Controls traffic between apps and AI models" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=11;fontColor=#2563eb;" parent="1" vertex="1">
+          <mxGeometry x="590" y="122" width="430" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="aapp1" value="Chatbot App" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dbeafe;strokeColor=#3b82f6;fontColor=#1e3a8a;fontSize=12;fontStyle=1;shadow=1;arcSize=20;" parent="1" vertex="1">
+          <mxGeometry x="615" y="158" width="110" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="aapp2" value="RAG Service" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dbeafe;strokeColor=#3b82f6;fontColor=#1e3a8a;fontSize=12;fontStyle=1;shadow=1;arcSize=20;" parent="1" vertex="1">
+          <mxGeometry x="755" y="158" width="110" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="aapp3" value="AI Agent" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dbeafe;strokeColor=#3b82f6;fontColor=#1e3a8a;fontSize=12;fontStyle=1;shadow=1;arcSize=20;" parent="1" vertex="1">
+          <mxGeometry x="885" y="158" width="110" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="aa1" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#3b82f6;strokeWidth=2;dashed=1;dashPattern=8 4;" parent="1" source="aapp1" target="eGateway" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="aa2" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#3b82f6;strokeWidth=2;dashed=1;dashPattern=8 4;" parent="1" source="aapp2" target="eGateway" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="aa3" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#3b82f6;strokeWidth=2;dashed=1;dashPattern=8 4;" parent="1" source="aapp3" target="eGateway" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eGateway" value="&lt;b&gt;Envoy AI Gateway&lt;/b&gt;&lt;br&gt;&lt;br&gt;Routing · Credentials · Token Budgets&lt;br&gt;Schema Translation · Observability" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1d4ed8;gradientColor=#3b82f6;strokeColor=#1e40af;fontColor=#ffffff;fontSize=12;shadow=1;arcSize=8;" parent="1" vertex="1">
+          <mxGeometry x="650" y="270" width="280" height="88" as="geometry" />
+        </mxCell>
+        <mxCell id="ep1" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#10b981;strokeWidth=2;" parent="1" source="eGateway" target="eprov1" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ep2" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#10b981;strokeWidth=2;" parent="1" source="eGateway" target="eprov2" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ep3" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#10b981;strokeWidth=2;" parent="1" source="eGateway" target="eprov3" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eprov1" value="OpenAI" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0f172a;strokeColor=#3b82f6;fontColor=#93c5fd;fontSize=12;fontStyle=1;shadow=1;arcSize=20;" parent="1" vertex="1">
+          <mxGeometry x="615" y="428" width="110" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="eprov2" value="AWS Bedrock" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0f172a;strokeColor=#3b82f6;fontColor=#93c5fd;fontSize=12;fontStyle=1;shadow=1;arcSize=20;" parent="1" vertex="1">
+          <mxGeometry x="755" y="428" width="110" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="eprov3" value="Vertex AI" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0f172a;strokeColor=#3b82f6;fontColor=#93c5fd;fontSize=12;fontStyle=1;shadow=1;arcSize=20;" parent="1" vertex="1">
+          <mxGeometry x="885" y="428" width="110" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="efoot1" value="Controls: App to AI Model traffic" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=11;fontStyle=1;fontColor=#1e40af;" parent="1" vertex="1">
+          <mxGeometry x="590" y="482" width="430" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="efoot2" value="Rate limit unit: Tokens / day per team    |    Engine: Envoy Proxy" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=10;fontColor=#2563eb;" parent="1" vertex="1">
+          <mxGeometry x="590" y="502" width="430" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="efoot3" value="Deployment: Centralized gateway pod (NOT sidecar)" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=10;fontColor=#2563eb;" parent="1" vertex="1">
+          <mxGeometry x="590" y="520" width="430" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="efoot4" value="Kubernetes config: AIGatewayRoute, BackendTrafficPolicy" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=10;fontColor=#2563eb;" parent="1" vertex="1">
+          <mxGeometry x="590" y="540" width="430" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="tableTitle" value="Concept Mapping — Same idea, different traffic" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=14;fontStyle=1;fontColor=#0f172a;" parent="1" vertex="1">
+          <mxGeometry x="100" y="610" width="840" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="th0" value="Concept" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0f172a;strokeColor=#334155;fontColor=#e2e8f0;fontSize=12;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="100" y="648" width="180" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="th1" value="Istio calls it" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#5b21b6;strokeColor=#4c1d95;fontColor=#ffffff;fontSize=12;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="285" y="648" width="210" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="th2" value="Envoy AI Gateway calls it" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1e40af;strokeColor=#1e3a8a;fontColor=#ffffff;fontSize=12;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="500" y="648" width="265" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="tr10" value="Entry point" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8fafc;strokeColor=#e2e8f0;fontColor=#374151;fontSize=11;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="100" y="689" width="180" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="tr11" value="Gateway" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f3ff;strokeColor=#ddd6fe;fontColor=#4c1d95;fontSize=11;" parent="1" vertex="1">
+          <mxGeometry x="285" y="689" width="210" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="tr12" value="AI Gateway" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#eff6ff;strokeColor=#bfdbfe;fontColor=#1e3a8a;fontSize=11;" parent="1" vertex="1">
+          <mxGeometry x="500" y="689" width="265" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="tr20" value="Routing rule" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8fafc;strokeColor=#e2e8f0;fontColor=#374151;fontSize=11;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="100" y="726" width="180" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="tr21" value="VirtualService" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f3ff;strokeColor=#ddd6fe;fontColor=#4c1d95;fontSize=11;" parent="1" vertex="1">
+          <mxGeometry x="285" y="726" width="210" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="tr22" value="AIGatewayRoute" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#eff6ff;strokeColor=#bfdbfe;fontColor=#1e3a8a;fontSize=11;" parent="1" vertex="1">
+          <mxGeometry x="500" y="726" width="265" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="tr30" value="Traffic policy" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8fafc;strokeColor=#e2e8f0;fontColor=#374151;fontSize=11;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="100" y="763" width="180" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="tr31" value="RateLimitPolicy" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f3ff;strokeColor=#ddd6fe;fontColor=#4c1d95;fontSize=11;" parent="1" vertex="1">
+          <mxGeometry x="285" y="763" width="210" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="tr32" value="BackendTrafficPolicy" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#eff6ff;strokeColor=#bfdbfe;fontColor=#1e3a8a;fontSize=11;" parent="1" vertex="1">
+          <mxGeometry x="500" y="763" width="265" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="tr40" value="Rate limiting unit" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8fafc;strokeColor=#e2e8f0;fontColor=#374151;fontSize=11;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="100" y="800" width="180" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="tr41" value="Requests / second" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f3ff;strokeColor=#ddd6fe;fontColor=#4c1d95;fontSize=11;" parent="1" vertex="1">
+          <mxGeometry x="285" y="800" width="210" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="tr42" value="Tokens / day per team" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#eff6ff;strokeColor=#bfdbfe;fontColor=#1e3a8a;fontSize=11;" parent="1" vertex="1">
+          <mxGeometry x="500" y="800" width="265" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="tr50" value="Underlying engine" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8fafc;strokeColor=#e2e8f0;fontColor=#374151;fontSize=11;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="100" y="837" width="180" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="tr51" value="Envoy Proxy" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f3ff;strokeColor=#ddd6fe;fontColor=#4c1d95;fontSize=11;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="285" y="837" width="210" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="tr52" value="Envoy Proxy" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#eff6ff;strokeColor=#bfdbfe;fontColor=#1e3a8a;fontSize=11;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="500" y="837" width="265" height="32" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
