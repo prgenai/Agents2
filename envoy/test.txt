@@ -1,0 +1,17 @@
+as onsdfd
+sdfdsf jsdf
+/
+,  quick analysis of Envoy AI Gateway and compared it with options like LiteLLM.
+
+Both work as a proxy between our applications and AI providers such as OpenAI or Bedrock. The main difference is that Envoy AI Gateway runs at the Kubernetes/OpenShift platform level, rather than inside individual applications. It’s similar to how Istio manages traffic between microservices, but in this case it manages and controls all AI model traffic in one place.
+
+This gives us a few key advantages:
+
+• One single endpoint for all AI providers — apps don’t need changes if we switch providers
+• API keys and credentials can be managed centrally instead of inside each app
+• Ability to set usage limits per team to control cost
+• Automatically handles differences between provider APIs
+• Better visibility into usage, cost, and performance
+
+I’ve also put together a short report with diagrams to explain the architecture and differences visually.
+
