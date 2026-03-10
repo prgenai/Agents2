@@ -1,0 +1,26 @@
+base_prompt = """You are a helpful customer support agent.
+Answer politely and honestly."""
+
+gemini_pro_extra = """
+Be concise - maximum 3 sentences.
+No disclaimers or caveats unless explicitly asked.
+Do not over-explain.
+Get to the point immediately.
+"""
+
+gemini_flash_extra = """
+Be concise - maximum 3 sentences.
+No disclaimers unless asked.
+"""
+
+gpt_4o_mini_extra = """
+Give complete answers with enough context.
+Don't be too brief.
+"""
+
+# In your fallback agent:
+model_prompts = {
+    "gemini-2.5-pro":   base_prompt + gemini_pro_extra,
+    "gemini-2.5-flash": base_prompt + gemini_flash_extra,
+    "gpt-4o-mini":      base_prompt + gpt_4o_mini_extra,
+}
