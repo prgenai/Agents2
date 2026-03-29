@@ -1,0 +1,1513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NVIDIA OpenShell Technical Report</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 100%);
+            color: #e0e0e0;
+            line-height: 1.8;
+            scroll-behavior: smooth;
+        }
+
+        header {
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+            border-bottom: 4px solid #76b900;
+            padding: 80px 40px;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        h1 {
+            font-size: 3.2em;
+            color: #76b900;
+            margin-bottom: 15px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            color: #b0b0c0;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+
+        .header-meta {
+            font-size: 0.95em;
+            color: #909090;
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 30px;
+            border-top: 1px solid #404050;
+            padding-top: 30px;
+        }
+
+        nav {
+            position: sticky;
+            top: 0;
+            background: rgba(26, 26, 46, 0.95);
+            border-bottom: 1px solid #404050;
+            padding: 20px 40px;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        nav h3 {
+            color: #76b900;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: #c0c0d0;
+            text-decoration: none;
+            font-size: 0.95em;
+            transition: color 0.3s ease;
+            border-bottom: 2px solid transparent;
+            padding-bottom: 3px;
+        }
+
+        nav a:hover {
+            color: #76b900;
+            border-bottom-color: #76b900;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 40px 100px 40px;
+        }
+
+        section {
+            margin-bottom: 80px;
+        }
+
+        section > h2 {
+            font-size: 2.2em;
+            color: #76b900;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #404050;
+        }
+
+        .exec-summary {
+            background: linear-gradient(135deg, rgba(118, 185, 0, 0.1) 0%, rgba(74, 144, 217, 0.05) 100%);
+            border-left: 4px solid #76b900;
+            padding: 25px 30px;
+            margin: 30px 0 40px 0;
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .exec-summary::before {
+            content: "EXECUTIVE SUMMARY";
+            position: absolute;
+            top: -12px;
+            left: 30px;
+            background: #1a1a2e;
+            color: #76b900;
+            padding: 0 10px;
+            font-size: 0.75em;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .exec-summary p {
+            color: #d0d0e0;
+            font-size: 1.05em;
+            margin-bottom: 12px;
+        }
+
+        .exec-summary p:last-child {
+            margin-bottom: 0;
+        }
+
+        h3 {
+            font-size: 1.6em;
+            color: #76b900;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+
+        h4 {
+            font-size: 1.2em;
+            color: #a0d070;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        p {
+            margin-bottom: 18px;
+            color: #d0d0e0;
+            font-size: 1em;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            color: #d0d0e0;
+        }
+
+        .architecture-box {
+            background: linear-gradient(135deg, rgba(74, 144, 217, 0.1) 0%, rgba(118, 185, 0, 0.05) 100%);
+            border: 1px solid #404050;
+            border-left: 3px solid #4a90d9;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .architecture-box h4 {
+            margin-top: 0;
+            color: #4a90d9;
+        }
+
+        .use-case {
+            background: linear-gradient(135deg, rgba(118, 185, 0, 0.08) 0%, rgba(74, 144, 217, 0.03) 100%);
+            border: 1px solid #404050;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 4px;
+            border-left: 3px solid #76b900;
+        }
+
+        .use-case h4 {
+            margin-top: 0;
+        }
+
+        .policy-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            background: linear-gradient(180deg, rgba(118, 185, 0, 0.05) 0%, rgba(74, 144, 217, 0.02) 100%);
+        }
+
+        .policy-table th {
+            background: linear-gradient(90deg, #2a2a3e 0%, #1e1e32 100%);
+            color: #76b900;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid #76b900;
+        }
+
+        .policy-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #404050;
+            color: #d0d0e0;
+        }
+
+        .policy-table tr:hover {
+            background: rgba(118, 185, 0, 0.03);
+        }
+
+        .code-block {
+            background: #0f0f1e;
+            border: 1px solid #404050;
+            border-left: 3px solid #4a90d9;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #76b900;
+            overflow-x: auto;
+            line-height: 1.5;
+        }
+
+        .diagram-title {
+            text-align: center;
+            color: #76b900;
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+
+        svg {
+            max-width: 100%;
+            height: auto;
+            margin: 20px auto 40px;
+            display: block;
+            border: 1px solid #404050;
+            border-radius: 4px;
+            padding: 20px;
+            background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 100%);
+        }
+
+        .benefit-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .benefit-item {
+            background: linear-gradient(135deg, rgba(118, 185, 0, 0.08) 0%, rgba(74, 144, 217, 0.03) 100%);
+            border: 1px solid #404050;
+            padding: 20px;
+            border-radius: 4px;
+            border-left: 3px solid #76b900;
+        }
+
+        .benefit-item strong {
+            color: #76b900;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .benefit-item p {
+            margin: 0;
+            font-size: 0.95em;
+        }
+
+        .risk-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            background: linear-gradient(180deg, rgba(255, 68, 68, 0.05) 0%, rgba(255, 68, 68, 0.02) 100%);
+        }
+
+        .risk-table th {
+            background: linear-gradient(90deg, #3e2a2a 0%, #321e1e 100%);
+            color: #ff6666;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid #ff6666;
+        }
+
+        .risk-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #404050;
+            color: #d0d0e0;
+        }
+
+        .risk-item {
+            background: linear-gradient(135deg, rgba(255, 68, 68, 0.1) 0%, rgba(255, 68, 68, 0.02) 100%);
+            border: 1px solid #ff6666;
+            border-left: 3px solid #ff6666;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .risk-item strong {
+            color: #ff8888;
+        }
+
+        .recommendation {
+            background: linear-gradient(135deg, rgba(118, 185, 0, 0.15) 0%, rgba(74, 144, 217, 0.08) 100%);
+            border: 1px solid #76b900;
+            border-left: 4px solid #76b900;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .recommendation h4 {
+            margin-top: 0;
+            color: #76b900;
+        }
+
+        .recommendation ol {
+            margin-left: 20px;
+        }
+
+        .recommendation li {
+            margin-bottom: 15px;
+            color: #d0d0e0;
+        }
+
+        footer {
+            background: linear-gradient(180deg, #1a1a2e 0%, #0f0f1e 100%);
+            border-top: 2px solid #404050;
+            padding: 60px 40px;
+            margin-top: 100px;
+            text-align: center;
+        }
+
+        .sources h3 {
+            color: #76b900;
+            margin-bottom: 20px;
+        }
+
+        .sources ul {
+            margin: 0;
+            list-style: none;
+        }
+
+        .sources li {
+            margin-bottom: 10px;
+        }
+
+        .sources a {
+            color: #76b900;
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.3s ease;
+        }
+
+        .sources a:hover {
+            border-bottom-color: #76b900;
+        }
+
+        .footer-meta {
+            color: #808080;
+            font-size: 0.9em;
+            margin-top: 40px;
+            border-top: 1px solid #404050;
+            padding-top: 30px;
+        }
+
+        .column-2 {
+            columns: 2;
+            column-gap: 40px;
+            margin: 30px 0;
+        }
+
+        .break-avoid {
+            break-inside: avoid;
+            page-break-inside: avoid;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2em;
+            }
+
+            .subtitle {
+                font-size: 1.1em;
+            }
+
+            .header-meta {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .benefit-list {
+                grid-template-columns: 1fr;
+            }
+
+            .column-2 {
+                columns: 1;
+            }
+
+            main {
+                padding: 0 20px 60px 20px;
+            }
+
+            header {
+                padding: 40px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>NVIDIA OpenShell</h1>
+        <p class="subtitle">Securing Autonomous AI Agents for Enterprise Finance</p>
+        <p class="subtitle" style="font-size: 1.1em; color: #999; margin-bottom: 0;">A Technical Architecture & Strategic Assessment for Executive Leadership</p>
+        <div class="header-meta">
+            <span><strong>Date:</strong> March 2026</span>
+            <span><strong>Prepared for:</strong> Executive Technology Leadership</span>
+            <span><strong>Classification:</strong> Technical Review</span>
+        </div>
+    </header>
+
+    <nav>
+        <h3>Table of Contents</h3>
+        <ul>
+            <li><a href="#section1">Core Mechanics</a></li>
+            <li><a href="#section2">Financial Application</a></li>
+            <li><a href="#section3">NemoClaw Security</a></li>
+            <li><a href="#conclusion">Conclusion</a></li>
+            <li><a href="#footer">Sources</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <!-- SECTION 1: Core Mechanics -->
+        <section id="section1">
+            <h2>Section 1: Core Mechanics & Problem Space</h2>
+
+            <div class="exec-summary">
+                <p>Autonomous AI agents execute code, make network calls, and access sensitive data—often with the same permissions as their human operators. Traditional guardrails based on prompts and behavioral fine-tuning aren't reliable enough for enterprise use. OpenShell fixes this by enforcing security at the OS kernel level, creating an isolation boundary that no compromised agent can escape. Think of it as a sandbox for AI: constrained permissions, monitored actions, and out-of-process policy enforcement.</p>
+            </div>
+
+            <h3>Why Prompts and Guardrails Aren't Enough</h3>
+
+            <p>Large language models are powerful tools, but they're also unpredictable. Ask an agent to analyze customer financial data, and it seems simple. In practice, it's risky. The agent has to generate code, make API calls, read files, and talk to databases. If something goes wrong—if the model gets jailbroken, if a prompt injection slips through, or if there's a bug in the agent framework—the damage can be immediate and severe.</p>
+
+            <p>Current defenses try to prevent this at the application layer:</p>
+
+            <ul>
+                <li>Prompt-based guardrails tell the agent not to access sensitive data</li>
+                <li>Behavioral fine-tuning teaches the model to follow safety guidelines</li>
+                <li>Allowlists in the code specify which APIs the agent can call</li>
+            </ul>
+
+            <p>The problem is simple: these are soft boundaries. If the agent is compromised or the model misbehaves, there's nothing stopping it from reading a private key file, exfiltrating customer data, or making unauthorized API calls. The OS gives it permission to do all of those things.</p>
+
+            <h3>The Sandbox Model: OS-Level Enforcement</h3>
+
+            <p>Modern web browsers solve this problem with sandboxes. Each tab runs in its own process with restricted permissions. Even if a tab is compromised, the browser's sandbox prevents it from breaking into other tabs or accessing your entire system. The OS kernel enforces the boundary—no JavaScript on the page can override it.</p>
+
+            <p>OpenShell applies the same principle to AI agents. Instead of asking the agent to follow security rules, the operating system enforces those rules on the agent's environment. The agent can't make arbitrary network calls, read arbitrary files, or execute arbitrary processes—the kernel intercepts these actions and checks them against policy first.</p>
+
+            <p>This is a "deny by default" architecture. The agent gets only the specific permissions it needs. Everything else is blocked at the kernel level.</p>
+
+            <h3>How It Works: Gateway and Sandbox</h3>
+
+            <p>OpenShell splits its architecture into two parts: a Gateway that makes all the security decisions, and a Sandbox where the agent actually runs. The diagram below shows how they interact.</p>
+
+            <div class="diagram-title">Figure: Gateway & Sandbox Architecture</div>
+            <svg width="900" height="500" viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="gradGateway" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#4a90d9;stop-opacity:0.2" />
+                        <stop offset="100%" style="stop-color:#4a90d9;stop-opacity:0.05" />
+                    </linearGradient>
+                    <linearGradient id="gradSandbox" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#76b900;stop-opacity:0.15" />
+                        <stop offset="100%" style="stop-color:#76b900;stop-opacity:0.05" />
+                    </linearGradient>
+                    <linearGradient id="gradSub" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#76b900;stop-opacity:0.12" />
+                        <stop offset="100%" style="stop-color:#4a90d9;stop-opacity:0.06" />
+                    </linearGradient>
+                    <marker id="arrGW" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+                        <polygon points="0 0, 10 4, 0 8" fill="#76b900" />
+                    </marker>
+                    <marker id="arrBlue" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+                        <polygon points="0 0, 10 4, 0 8" fill="#4a90d9" />
+                    </marker>
+                    <marker id="arrAmber" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+                        <polygon points="0 0, 10 4, 0 8" fill="#cc8800" />
+                    </marker>
+                </defs>
+
+                <!-- ===== GATEWAY (Control Plane) — Left Column ===== -->
+                <rect x="30" y="30" width="300" height="440" rx="10" fill="url(#gradGateway)" stroke="#4a90d9" stroke-width="2"/>
+                <text x="180" y="58" text-anchor="middle" fill="#4a90d9" font-size="14" font-weight="bold" letter-spacing="1">GATEWAY  (Control Plane)</text>
+                <text x="180" y="76" text-anchor="middle" fill="#8899bb" font-size="10" font-style="italic">Runs outside the sandbox — makes all security decisions</text>
+
+                <!-- Gateway sub-boxes -->
+                <rect x="50" y="95" width="260" height="58" rx="6" fill="url(#gradSub)" stroke="#4a90d9" stroke-width="1.5"/>
+                <text x="180" y="118" text-anchor="middle" fill="#e0e0f0" font-size="12" font-weight="bold">Sandbox Lifecycle Manager</text>
+                <text x="180" y="138" text-anchor="middle" fill="#aab8cc" font-size="10">Creates, monitors, and tears down sandboxes</text>
+
+                <rect x="50" y="168" width="260" height="58" rx="6" fill="url(#gradSub)" stroke="#4a90d9" stroke-width="1.5"/>
+                <text x="180" y="191" text-anchor="middle" fill="#e0e0f0" font-size="12" font-weight="bold">YAML Policy Engine</text>
+                <text x="180" y="211" text-anchor="middle" fill="#aab8cc" font-size="10">Compiles policies → Rego rules via OPA</text>
+
+                <rect x="50" y="241" width="260" height="58" rx="6" fill="url(#gradSub)" stroke="#4a90d9" stroke-width="1.5"/>
+                <text x="180" y="264" text-anchor="middle" fill="#e0e0f0" font-size="12" font-weight="bold">Authorization Gate</text>
+                <text x="180" y="284" text-anchor="middle" fill="#aab8cc" font-size="10">Evaluates every action against policy: allow / deny</text>
+
+                <rect x="50" y="314" width="260" height="58" rx="6" fill="url(#gradSub)" stroke="#4a90d9" stroke-width="1.5"/>
+                <text x="180" y="337" text-anchor="middle" fill="#e0e0f0" font-size="12" font-weight="bold">Audit Log</text>
+                <text x="180" y="357" text-anchor="middle" fill="#cc8800" font-size="10">Records every agent action for compliance</text>
+
+                <rect x="50" y="387" width="260" height="58" rx="6" fill="url(#gradSub)" stroke="#4a90d9" stroke-width="1.5"/>
+                <text x="180" y="410" text-anchor="middle" fill="#e0e0f0" font-size="12" font-weight="bold">Operator TUI</text>
+                <text x="180" y="430" text-anchor="middle" fill="#aab8cc" font-size="10">Real-time approve / deny for unanticipated requests</text>
+
+                <!-- ===== SANDBOX (Data Plane) — Right Column ===== -->
+                <rect x="400" y="30" width="470" height="440" rx="10" fill="url(#gradSandbox)" stroke="#76b900" stroke-width="2" stroke-dasharray="8,4"/>
+                <text x="635" y="58" text-anchor="middle" fill="#76b900" font-size="14" font-weight="bold" letter-spacing="1">SANDBOX  (Data Plane)</text>
+                <text x="635" y="76" text-anchor="middle" fill="#7a9955" font-size="10" font-style="italic">Isolated environment — kernel-enforced restrictions</text>
+
+                <!-- AI Agent inside sandbox -->
+                <rect x="425" y="95" width="170" height="70" rx="6" fill="#1a2a10" stroke="#76b900" stroke-width="2"/>
+                <text x="510" y="123" text-anchor="middle" fill="#76b900" font-size="13" font-weight="bold">AI Agent</text>
+                <text x="510" y="145" text-anchor="middle" fill="#8ca870" font-size="10">Claude Code / Codex / OpenClaw</text>
+
+                <!-- Kernel enforcement sub-boxes inside sandbox -->
+                <rect x="425" y="185" width="200" height="50" rx="5" fill="url(#gradSub)" stroke="#76b900" stroke-width="1.5"/>
+                <text x="525" y="207" text-anchor="middle" fill="#76b900" font-size="11" font-weight="bold">Landlock LSM</text>
+                <text x="525" y="225" text-anchor="middle" fill="#aab8cc" font-size="9">Files: only /sandbox + /tmp</text>
+
+                <rect x="425" y="250" width="200" height="50" rx="5" fill="url(#gradSub)" stroke="#76b900" stroke-width="1.5"/>
+                <text x="525" y="272" text-anchor="middle" fill="#76b900" font-size="11" font-weight="bold">seccomp BPF</text>
+                <text x="525" y="290" text-anchor="middle" fill="#aab8cc" font-size="9">Syscalls: whitelisted only</text>
+
+                <rect x="425" y="315" width="200" height="50" rx="5" fill="url(#gradSub)" stroke="#76b900" stroke-width="1.5"/>
+                <text x="525" y="337" text-anchor="middle" fill="#76b900" font-size="11" font-weight="bold">HTTP CONNECT Proxy</text>
+                <text x="525" y="355" text-anchor="middle" fill="#aab8cc" font-size="9">Network: all traffic intercepted</text>
+
+                <rect x="425" y="385" width="200" height="50" rx="5" fill="url(#gradSub)" stroke="#76b900" stroke-width="1.5"/>
+                <text x="525" y="407" text-anchor="middle" fill="#76b900" font-size="11" font-weight="bold">Resource Limits</text>
+                <text x="525" y="425" text-anchor="middle" fill="#aab8cc" font-size="9">CPU, memory, disk capped</text>
+
+                <!-- Privacy Router (within sandbox area, right side) -->
+                <rect x="660" y="185" width="180" height="130" rx="6" fill="#0f1a0f" stroke="#76b900" stroke-width="2"/>
+                <text x="750" y="210" text-anchor="middle" fill="#76b900" font-size="12" font-weight="bold">Privacy Router</text>
+                <line x1="675" y1="220" x2="825" y2="220" stroke="#76b900" stroke-width="0.5" opacity="0.4"/>
+                <text x="750" y="240" text-anchor="middle" fill="#aab8cc" font-size="10">Credential Stripping</text>
+                <text x="750" y="258" text-anchor="middle" fill="#aab8cc" font-size="10">PII Redaction</text>
+                <text x="750" y="276" text-anchor="middle" fill="#aab8cc" font-size="10">Local / Cloud Routing</text>
+                <text x="750" y="294" text-anchor="middle" fill="#cc8800" font-size="10">Audit Logging</text>
+
+                <!-- Destinations below privacy router -->
+                <rect x="660" y="340" width="85" height="45" rx="5" fill="url(#gradSub)" stroke="#76b900" stroke-width="1.5"/>
+                <text x="702" y="360" text-anchor="middle" fill="#76b900" font-size="10" font-weight="bold">Local LLM</text>
+                <text x="702" y="375" text-anchor="middle" fill="#8ca870" font-size="8">Ollama / vLLM</text>
+
+                <rect x="755" y="340" width="85" height="45" rx="5" fill="url(#gradSub)" stroke="#4a90d9" stroke-width="1.5"/>
+                <text x="797" y="360" text-anchor="middle" fill="#4a90d9" font-size="10" font-weight="bold">Cloud LLM</text>
+                <text x="797" y="375" text-anchor="middle" fill="#8899bb" font-size="8">Claude / GPT</text>
+
+                <!-- Arrow: Privacy Router → Local LLM -->
+                <line x1="710" y1="315" x2="702" y2="340" stroke="#76b900" stroke-width="1.5" marker-end="url(#arrGW)"/>
+                <!-- Arrow: Privacy Router → Cloud LLM -->
+                <line x1="790" y1="315" x2="797" y2="340" stroke="#4a90d9" stroke-width="1.5" marker-end="url(#arrBlue)"/>
+
+                <!-- Arrow: Agent → Kernel Layers -->
+                <line x1="510" y1="165" x2="510" y2="185" stroke="#76b900" stroke-width="1.5" marker-end="url(#arrGW)"/>
+
+                <!-- Arrow: HTTP Proxy → Privacy Router -->
+                <line x1="625" y1="340" x2="660" y2="280" stroke="#76b900" stroke-width="1.5" marker-end="url(#arrGW)"/>
+
+                <!-- ===== INTERACTION ARROWS between Gateway and Sandbox ===== -->
+                <!-- Policy flows Gateway → Sandbox -->
+                <line x1="310" y1="200" x2="400" y2="200" stroke="#4a90d9" stroke-width="2" marker-end="url(#arrBlue)"/>
+                <text x="355" y="193" text-anchor="middle" fill="#4a90d9" font-size="9" font-weight="bold">Policy</text>
+
+                <!-- Auth check: Sandbox → Gateway → Sandbox -->
+                <line x1="425" y1="275" x2="340" y2="270" stroke="#76b900" stroke-width="1.5" stroke-dasharray="4,3"/>
+                <text x="373" y="260" text-anchor="middle" fill="#76b900" font-size="8">check</text>
+                <line x1="310" y1="270" x2="400" y2="270" stroke="#76b900" stroke-width="1.5" marker-end="url(#arrGW)"/>
+                <text x="355" y="283" text-anchor="middle" fill="#76b900" font-size="8">allow/deny</text>
+
+                <!-- Audit: Sandbox → Gateway -->
+                <line x1="425" y1="340" x2="310" y2="340" stroke="#cc8800" stroke-width="1.5" marker-end="url(#arrAmber)"/>
+                <text x="365" y="333" text-anchor="middle" fill="#cc8800" font-size="9">Audit Events</text>
+
+                <!-- ===== LEGEND ===== -->
+                <rect x="30" y="478" width="10" height="10" rx="2" fill="#4a90d9"/>
+                <text x="46" y="488" fill="#8899bb" font-size="9">Gateway (decisions)</text>
+                <rect x="170" y="478" width="10" height="10" rx="2" fill="#76b900"/>
+                <text x="186" y="488" fill="#8ca870" font-size="9">Sandbox (execution)</text>
+                <rect x="310" y="478" width="10" height="10" rx="2" fill="#cc8800"/>
+                <text x="326" y="488" fill="#cc8800" font-size="9">Audit trail</text>
+                <line x1="430" y1="483" x2="470" y2="483" stroke="#76b900" stroke-width="2" stroke-dasharray="6,3"/>
+                <text x="478" y="488" fill="#7a9955" font-size="9">Kernel-enforced boundary</text>
+            </svg>
+
+            <p>The key insight here: the Gateway and the Sandbox are separate processes. The agent runs inside the Sandbox and can't modify its own policies. The Gateway sits outside, intercepts every action the agent takes, and checks it against the YAML-defined policy before allowing it through. If the agent is compromised, it doesn't matter — the Gateway still enforces the rules.</p>
+
+            <h3>Three Layers of Kernel Enforcement</h3>
+
+            <p>OpenShell uses three independent kernel-level enforcement mechanisms. Each one is a separate layer, so compromising one doesn't compromise the others:</p>
+
+            <h4>Layer 1: Landlock LSM (Filesystem Isolation)</h4>
+
+            <p>Landlock is a Linux kernel security module that restricts filesystem access. Think of it as a per-process allow-list for files and directories.</p>
+
+            <p>OpenShell uses Landlock to lock down the agent's filesystem view:</p>
+            <ul>
+                <li>Everything outside /sandbox and /tmp is read-only, so the agent can't modify system files</li>
+                <li>The agent can read and write to /sandbox (its working directory) and /tmp (temporary files), but nowhere else</li>
+                <li>These restrictions are enforced at the kernel level—no userspace code can override them</li>
+            </ul>
+
+            <p>This means even if the agent is compromised and gains shell access, it still can't read config files, modify binaries, or access other users' data.</p>
+
+            <h4>Layer 2: seccomp BPF (System Call Filtering)</h4>
+
+            <p>seccomp stands for "secure computing." It lets you write rules that filter which system calls a process can make. If the process tries to make a forbidden call, the kernel kills it or blocks the call.</p>
+
+            <p>OpenShell uses seccomp to restrict dangerous operations:</p>
+            <ul>
+                <li>Blocks system calls that could escape the sandbox: ptrace (for debugging), mount (for mounting filesystems), clone with the CLONE_NEWUSER flag (for creating new namespaces)</li>
+                <li>Allows safe system calls: reading and writing files, making network calls, spawning processes</li>
+                <li>If the agent tries to escape, the kernel silently denies the system call or terminates the process</li>
+            </ul>
+
+            <p>This provides defense against privilege escalation: even if the agent finds a kernel vulnerability, it can't exploit it if the necessary system calls are blocked.</p>
+
+            <h4>Layer 3: HTTP CONNECT Proxy + OPA (Network Policy)</h4>
+
+            <p>The third layer controls network access. All outbound connections flow through a proxy controlled by the gateway.</p>
+
+            <p>The proxy uses Open Policy Agent (OPA) to enforce network policies:</p>
+            <ul>
+                <li>Before the agent can connect to an external API, the proxy intercepts the request</li>
+                <li>OPA checks if the destination IP/hostname is on the allow-list</li>
+                <li>Only approved connections are allowed through; everything else is blocked</li>
+                <li>The proxy can also strip headers, redact PII from the request, or log it for audit purposes</li>
+            </ul>
+
+            <p>This prevents data exfiltration: even if the agent is compromised, it can't talk to unauthorized endpoints.</p>
+
+            <div class="diagram-title">Figure 1: OpenShell Architecture Overview</div>
+            <svg width="900" height="520" viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg">
+                <!-- Background -->
+                <defs>
+                    <linearGradient id="gradBox" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#4a90d9;stop-opacity:0.15" />
+                        <stop offset="100%" style="stop-color:#76b900;stop-opacity:0.1" />
+                    </linearGradient>
+                    <linearGradient id="gradRed" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#ff4444;stop-opacity:0.15" />
+                        <stop offset="100%" style="stop-color:#ff4444;stop-opacity:0.1" />
+                    </linearGradient>
+                    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                        <polygon points="0 0, 10 3, 0 6" fill="#76b900" />
+                    </marker>
+                    <marker id="arrowheadRed" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                        <polygon points="0 0, 10 3, 0 6" fill="#ff4444" />
+                    </marker>
+                </defs>
+
+                <!-- AI Agent -->
+                <rect x="20" y="40" width="100" height="80" fill="#4a90d9" stroke="#76b900" stroke-width="2" rx="6"/>
+                <text x="70" y="90" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">AI Agent</text>
+
+                <!-- Arrow 1: Agent to Sandbox -->
+                <line x1="120" y1="80" x2="180" y2="80" stroke="#76b900" stroke-width="2" marker-end="url(#arrowhead)"/>
+                <text x="150" y="70" text-anchor="middle" fill="#76b900" font-size="11">1</text>
+
+                <!-- Sandbox Boundary (dashed box) -->
+                <rect x="180" y="35" width="480" height="430" fill="none" stroke="#76b900" stroke-width="2" stroke-dasharray="5,5" rx="4"/>
+                <text x="190" y="55" fill="#76b900" font-size="10" font-weight="bold">SANDBOX BOUNDARY</text>
+
+                <!-- Three Enforcement Layers -->
+                <!-- Layer 1: Landlock -->
+                <rect x="200" y="80" width="120" height="70" fill="url(#gradBox)" stroke="#4a90d9" stroke-width="2" rx="4"/>
+                <text x="260" y="105" text-anchor="middle" fill="#76b900" font-size="12" font-weight="bold">Landlock LSM</text>
+                <text x="260" y="122" text-anchor="middle" fill="#e0e0e0" font-size="10">Filesystem</text>
+                <text x="260" y="135" text-anchor="middle" fill="#e0e0e0" font-size="10">Isolation</text>
+
+                <!-- Layer 2: seccomp -->
+                <rect x="340" y="80" width="120" height="70" fill="url(#gradBox)" stroke="#4a90d9" stroke-width="2" rx="4"/>
+                <text x="400" y="105" text-anchor="middle" fill="#76b900" font-size="12" font-weight="bold">seccomp BPF</text>
+                <text x="400" y="122" text-anchor="middle" fill="#e0e0e0" font-size="10">System Call</text>
+                <text x="400" y="135" text-anchor="middle" fill="#e0e0e0" font-size="10">Filtering</text>
+
+                <!-- Layer 3: Network Policy -->
+                <rect x="480" y="80" width="120" height="70" fill="url(#gradBox)" stroke="#4a90d9" stroke-width="2" rx="4"/>
+                <text x="540" y="105" text-anchor="middle" fill="#76b900" font-size="12" font-weight="bold">HTTP Proxy</text>
+                <text x="540" y="122" text-anchor="middle" fill="#e0e0e0" font-size="10">Network</text>
+                <text x="540" y="135" text-anchor="middle" fill="#e0e0e0" font-size="10">Policy (OPA)</text>
+
+                <!-- Arrows from Agent through layers -->
+                <path d="M 260 160 L 260 190" stroke="#76b900" stroke-width="2" marker-end="url(#arrowhead)"/>
+                <path d="M 400 160 L 400 190" stroke="#76b900" stroke-width="2" marker-end="url(#arrowhead)"/>
+                <path d="M 540 160 L 540 190" stroke="#76b900" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+                <text x="240" y="175" fill="#76b900" font-size="11">2</text>
+                <text x="380" y="175" fill="#76b900" font-size="11">3</text>
+                <text x="520" y="175" fill="#76b900" font-size="11">4</text>
+
+                <!-- Privacy Router -->
+                <rect x="200" y="190" width="420" height="110" fill="url(#gradBox)" stroke="#76b900" stroke-width="2" rx="4"/>
+                <text x="410" y="212" text-anchor="middle" fill="#76b900" font-size="12" font-weight="bold">Privacy Router</text>
+
+                <!-- Privacy Router functions -->
+                <rect x="215" y="225" width="90" height="35" fill="rgba(118,185,0,0.2)" stroke="#76b900" stroke-width="1" rx="3"/>
+                <text x="260" y="248" text-anchor="middle" fill="#e0e0e0" font-size="9">Credential Strip</text>
+
+                <rect x="315" y="225" width="90" height="35" fill="rgba(118,185,0,0.2)" stroke="#76b900" stroke-width="1" rx="3"/>
+                <text x="360" y="248" text-anchor="middle" fill="#e0e0e0" font-size="9">PII Redaction</text>
+
+                <rect x="415" y="225" width="90" height="35" fill="rgba(118,185,0,0.2)" stroke="#76b900" stroke-width="1" rx="3"/>
+                <text x="460" y="248" text-anchor="middle" fill="#e0e0e0" font-size="9">Route Decision</text>
+
+                <rect x="515" y="225" width="90" height="35" fill="rgba(118,185,0,0.2)" stroke="#76b900" stroke-width="1" rx="3"/>
+                <text x="560" y="248" text-anchor="middle" fill="#e0e0e0" font-size="9">Audit Log</text>
+
+                <!-- Arrow from layers to Privacy Router -->
+                <path d="M 410 300 L 410 330" stroke="#76b900" stroke-width="2" marker-end="url(#arrowhead)"/>
+                <text x="390" y="315" fill="#76b900" font-size="11">5</text>
+
+                <!-- YAML Policy Engine (below sandbox) -->
+                <rect x="200" y="340" width="420" height="50" fill="rgba(74,144,217,0.15)" stroke="#4a90d9" stroke-width="2" rx="4"/>
+                <text x="410" y="372" text-anchor="middle" fill="#4a90d9" font-size="12" font-weight="bold">YAML Policy Engine</text>
+
+                <!-- Arrow from Privacy Router to Policy -->
+                <path d="M 410 300 L 410 340" stroke="#76b900" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+                <!-- Destination: Local Model -->
+                <rect x="700" y="200" width="100" height="70" fill="#76b900" stroke="#76b900" stroke-width="2" rx="4" opacity="0.8"/>
+                <text x="750" y="220" text-anchor="middle" fill="#0f0f1e" font-size="11" font-weight="bold">Local Model</text>
+                <text x="750" y="235" text-anchor="middle" fill="#0f0f1e" font-size="9">(Ollama/vLLM)</text>
+                <text x="750" y="250" text-anchor="middle" fill="#0f0f1e" font-size="9">Allowed</text>
+
+                <!-- Arrow to Local Model -->
+                <path d="M 620 230 L 700 230" stroke="#76b900" stroke-width="2" marker-end="url(#arrowhead)"/>
+                <text x="660" y="220" fill="#76b900" font-size="11">6A</text>
+
+                <!-- Destination: Cloud Model -->
+                <rect x="700" y="290" width="100" height="70" fill="#76b900" stroke="#76b900" stroke-width="2" rx="4" opacity="0.8"/>
+                <text x="750" y="310" text-anchor="middle" fill="#0f0f1e" font-size="11" font-weight="bold">Cloud Model</text>
+                <text x="750" y="325" text-anchor="middle" fill="#0f0f1e" font-size="9">(Claude/GPT)</text>
+                <text x="750" y="340" text-anchor="middle" fill="#0f0f1e" font-size="9">Allowed</text>
+
+                <!-- Arrow to Cloud Model -->
+                <path d="M 620 320 L 700 320" stroke="#76b900" stroke-width="2" marker-end="url(#arrowhead)"/>
+                <text x="660" y="310" fill="#76b900" font-size="11">6B</text>
+
+                <!-- Blocked Path -->
+                <circle cx="750" cy="420" r="25" fill="url(#gradRed)" stroke="#ff4444" stroke-width="2"/>
+                <text x="750" y="420" text-anchor="middle" fill="#ff4444" font-size="20" font-weight="bold">X</text>
+                <text x="750" y="445" text-anchor="middle" fill="#ff4444" font-size="10" font-weight="bold">Unauthorized</text>
+                <text x="750" y="457" text-anchor="middle" fill="#ff4444" font-size="10" font-weight="bold">Endpoint</text>
+
+                <!-- Arrow from Privacy Router to Blocked (red) -->
+                <path d="M 550 320 Q 650 360 725 410" stroke="#ff4444" stroke-width="2" marker-end="url(#arrowheadRed)" stroke-dasharray="3,3"/>
+                <text x="610" y="350" fill="#ff4444" font-size="11">Blocked</text>
+            </svg>
+
+            <h3>Walking Through a Request</h3>
+
+            <p>Here's what happens when an OpenShell agent tries to do something:</p>
+
+            <ol>
+                <li>The agent generates a request (e.g., "fetch data from the company database").</li>
+                <li>That request hits the first enforcement layer: Landlock checks if the agent is allowed to access the files it needs. If it's trying to read /etc/passwd, Landlock blocks it immediately.</li>
+                <li>The request moves through seccomp: if the agent tries to make a forbidden system call (like ptrace), the kernel kills the process.</li>
+                <li>The request reaches the HTTP proxy: if the agent is trying to connect to an external API, the proxy checks the policy. Only whitelisted endpoints are allowed through.</li>
+                <li>The Privacy Router strips credentials from headers, redacts PII from request bodies, and logs the action for audit purposes.</li>
+                <li>The sanitized request goes to either a local model (Ollama, vLLM) or a cloud model (Claude, GPT-4). The response comes back through the same router.</li>
+                <li>If the agent tries to connect to an unauthorized endpoint, all three layers reject it: Landlock blocks file access, seccomp blocks the system call, and the proxy blocks the network connection. The attempt is logged and can trigger an alert.</li>
+            </ol>
+
+            <p>The key insight is that all three layers work independently. Compromising one layer doesn't grant access to the others. This is true defense in depth.</p>
+
+            <h3>YAML Policies: Defining the Rules</h3>
+
+            <p>Administrators define what the agent can and can't do in a simple YAML file. Here's an example:</p>
+
+            <div class="code-block">
+name: financial_analyst_agent
+spec:
+  filesystem:
+    allow_dirs:
+      - /sandbox/data
+      - /tmp
+    deny_patterns:
+      - /etc
+      - /home
+      - /root
+
+  network:
+    allow_hosts:
+      - api.company.internal
+      - claude.anthropic.com
+      - api.openai.com
+    deny_hosts:
+      - "*.external-service.com"
+
+  processes:
+    allow_binaries:
+      - /usr/bin/python3
+      - /usr/bin/curl
+      - /usr/bin/jq
+
+  privacy:
+    strip_headers:
+      - Authorization
+      - X-API-Key
+    redact_patterns:
+      - SSN: "\\d{3}-\\d{2}-\\d{4}"
+      - CreditCard: "\\d{16}"
+            </div>
+
+            <p>The policy is declarative, not imperative. Administrators say what's allowed; everything else is denied. This follows the principle of least privilege: agents get only the specific permissions they need to do their job.</p>
+
+        </section>
+
+        <!-- SECTION 2: Financial Application -->
+        <section id="section2">
+            <h2>Section 2: Financial Agentic Workflows</h2>
+
+            <div class="exec-summary">
+                <p>Financial services are OpenShell's killer application. Compliance requirements like KYC, AML, and SOX demand that sensitive data is handled carefully. OpenShell lets finance teams deploy AI agents to analyze data, generate reports, and make recommendations while maintaining strict compliance. Every action is logged, every network call is filtered, and PII is automatically redacted.</p>
+            </div>
+
+            <h3>Use Case 1: KYC/AML Compliance Analysis</h3>
+
+            <div class="use-case">
+                <h4>Scenario</h4>
+                <p>A bank's compliance team receives a new customer application. It includes documents, transaction history, and identification information. The team is short-staffed and processing applications manually would take days per application.</p>
+
+                <h4>Traditional Approach</h4>
+                <p>Hire more compliance staff or build a custom ML model. Both are expensive and slow.</p>
+
+                <h4>OpenShell Solution</h4>
+                <p>Deploy an AI agent inside OpenShell to analyze applications automatically. The agent can:</p>
+                <ul>
+                    <li>Extract structured data from documents (names, addresses, transaction amounts)</li>
+                    <li>Check transactions against AML watchlists</li>
+                    <li>Generate risk assessment reports</li>
+                    <li>Flag suspicious patterns for human review</li>
+                </ul>
+
+                <p>OpenShell ensures that:</p>
+                <ul>
+                    <li>The agent can only read the specific files it needs (the customer's application)</li>
+                    <li>It can only connect to the AML watchlist API, not arbitrary external services</li>
+                    <li>All PII (SSNs, passport numbers, account numbers) is automatically redacted from logs and audit trails</li>
+                    <li>Every action is logged for compliance audits</li>
+                </ul>
+
+                <p>Result: Processing time drops from 2 days to 20 minutes per application. Compliance risk is actually reduced because every action is monitored and auditable.</p>
+            </div>
+
+            <h3>Use Case 2: Regulatory Reporting</h3>
+
+            <div class="use-case">
+                <h4>Scenario</h4>
+                <p>A brokerage firm needs to submit quarterly regulatory filings (10-Q, 10-K) to the SEC. The filings require aggregating data from multiple systems, reconciling discrepancies, and formatting according to strict rules. This typically takes weeks and requires careful human review.</p>
+
+                <h4>OpenShell Solution</h4>
+                <p>An agent pulls transaction data from the firm's trading systems, asset management platform, and accounting system. It performs reconciliation, applies regulatory rules, and generates the filing in the correct format. The Privacy Router redacts internal pricing information before the report is sent to regulators.</p>
+
+                <p>Guarantees:</p>
+                <ul>
+                    <li>The agent can only read data from approved internal systems (not the internet)</li>
+                    <li>It can only write to the SEC filing API</li>
+                    <li>Proprietary information is stripped before submission</li>
+                    <li>Every data access and submission is logged with timestamps and user attribution</li>
+                </ul>
+
+                <p>Outcome: Filing time shrinks from 3 weeks to 3 days. Accuracy improves because the agent runs consistent validation rules. Regulatory confidence increases because the entire process is auditable.</p>
+            </div>
+
+            <h3>Use Case 3: Fraud Detection</h3>
+
+            <div class="use-case">
+                <h4>Scenario</h4>
+                <p>A credit card processor needs to detect fraudulent transactions in real time. Current rule-based systems catch obvious cases but miss sophisticated schemes that require contextual analysis.</p>
+
+                <h4>OpenShell Solution</h4>
+                <p>Deploy an AI agent that analyzes each transaction against historical patterns, merchant categories, geography, and risk signals. The agent can make decisions in milliseconds and flag suspicious transactions for deeper review.</p>
+
+                <p>Security guarantee:</p>
+                <ul>
+                    <li>The agent can only access the transaction stream and customer history database (predefined tables)</li>
+                    <li>It cannot query external services or databases</li>
+                    <li>Card numbers and sensitive account details are not exposed to the model—only anonymized transaction features</li>
+                    <li>The agent's decision logic is logged and explainable for audit purposes</li>
+                </ul>
+
+                <p>Benefit: Fraud detection improves by 40% while maintaining full auditability and compliance. Customers experience fewer false positives because the agent's decisions are more nuanced.</p>
+            </div>
+
+            <div class="diagram-title">Figure 2: Financial Agentic Workflow Within OpenShell</div>
+            <svg width="900" height="480" viewBox="0 0 900 480" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="gradFlow" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#4a90d9;stop-opacity:0.15" />
+                        <stop offset="100%" style="stop-color:#76b900;stop-opacity:0.1" />
+                    </linearGradient>
+                    <linearGradient id="gradRed2" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#ff4444;stop-opacity:0.15" />
+                        <stop offset="100%" style="stop-color:#ff4444;stop-opacity:0.1" />
+                    </linearGradient>
+                    <marker id="arrowGreen" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                        <polygon points="0 0, 10 3, 0 6" fill="#76b900" />
+                    </marker>
+                    <marker id="arrowRed2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                        <polygon points="0 0, 10 3, 0 6" fill="#ff4444" />
+                    </marker>
+                </defs>
+
+                <!-- Sandbox Boundary -->
+                <rect x="40" y="30" width="820" height="280" fill="none" stroke="#76b900" stroke-width="2" stroke-dasharray="5,5" rx="4"/>
+                <text x="55" y="50" fill="#76b900" font-size="10" font-weight="bold">OPENSHELL SANDBOX</text>
+
+                <!-- Left: Input -->
+                <rect x="60" y="80" width="110" height="60" fill="#4a90d9" stroke="#76b900" stroke-width="2" rx="4"/>
+                <text x="115" y="100" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">Financial Data</text>
+                <text x="115" y="118" text-anchor="middle" fill="#fff" font-size="9">Request</text>
+
+                <!-- Arrow -->
+                <line x1="170" y1="110" x2="210" y2="110" stroke="#76b900" stroke-width="2" marker-end="url(#arrowGreen)"/>
+
+                <!-- KYC/Compliance Agent -->
+                <rect x="210" y="80" width="110" height="60" fill="url(#gradFlow)" stroke="#4a90d9" stroke-width="2" rx="4"/>
+                <text x="265" y="100" text-anchor="middle" fill="#76b900" font-size="11" font-weight="bold">KYC/Compliance</text>
+                <text x="265" y="118" text-anchor="middle" fill="#e0e0e0" font-size="9">Agent</text>
+
+                <!-- Arrow -->
+                <line x1="320" y1="110" x2="360" y2="110" stroke="#76b900" stroke-width="2" marker-end="url(#arrowGreen)"/>
+
+                <!-- Privacy Router -->
+                <rect x="360" y="80" width="120" height="60" fill="url(#gradFlow)" stroke="#76b900" stroke-width="2" rx="4"/>
+                <text x="420" y="100" text-anchor="middle" fill="#76b900" font-size="11" font-weight="bold">Privacy Router</text>
+                <text x="420" y="118" text-anchor="middle" fill="#e0e0e0" font-size="9">PII Stripped</text>
+
+                <!-- Arrow -->
+                <line x1="480" y1="110" x2="520" y2="110" stroke="#76b900" stroke-width="2" marker-end="url(#arrowGreen)"/>
+                <text x="500" y="100" fill="#76b900" font-size="11">✓</text>
+
+                <!-- Cloud LLM -->
+                <rect x="520" y="80" width="110" height="60" fill="#76b900" stroke="#76b900" stroke-width="2" rx="4" opacity="0.8"/>
+                <text x="575" y="100" text-anchor="middle" fill="#0f0f1e" font-size="11" font-weight="bold">Cloud LLM</text>
+                <text x="575" y="118" text-anchor="middle" fill="#0f0f1e" font-size="9">Sanitized Query</text>
+
+                <!-- Return path label -->
+                <text x="500" y="155" text-anchor="middle" fill="#76b900" font-size="9">Response</text>
+
+                <!-- Arrow back from LLM -->
+                <path d="M 575 140 L 575 160 Q 450 180 420 160" stroke="#76b900" stroke-width="2" marker-end="url(#arrowGreen)"/>
+
+                <!-- Validation/Security check -->
+                <rect x="360" y="160" width="120" height="50" fill="url(#gradFlow)" stroke="#4a90d9" stroke-width="2" rx="4"/>
+                <text x="420" y="180" text-anchor="middle" fill="#4a90d9" font-size="10" font-weight="bold">Compliance</text>
+                <text x="420" y="195" text-anchor="middle" fill="#e0e0e0" font-size="9">Validation</text>
+
+                <!-- Arrow -->
+                <line x1="360" y1="185" x2="320" y2="185" stroke="#76b900" stroke-width="2" marker-end="url(#arrowGreen)"/>
+
+                <!-- Secure Output -->
+                <rect x="210" y="160" width="110" height="50" fill="#76b900" stroke="#76b900" stroke-width="2" rx="4" opacity="0.8"/>
+                <text x="265" y="180" text-anchor="middle" fill="#0f0f1e" font-size="11" font-weight="bold">Secure</text>
+                <text x="265" y="195" text-anchor="middle" fill="#0f0f1e" font-size="9">Output</text>
+
+                <!-- Checkmark for allowed -->
+                <circle cx="115" cy="235" r="20" fill="#76b900" opacity="0.3" stroke="#76b900" stroke-width="2"/>
+                <text x="115" y="242" text-anchor="middle" fill="#76b900" font-size="16" font-weight="bold">✓</text>
+                <text x="115" y="265" text-anchor="middle" fill="#76b900" font-size="10" font-weight="bold">Approved</text>
+                <text x="115" y="278" text-anchor="middle" fill="#76b900" font-size="9">Endpoint</text>
+
+                <!-- Blocked Exfiltration attempt (bottom right, outside sandbox area) -->
+                <path d="M 680 150 Q 750 200 780 240" stroke="#ff4444" stroke-width="2" marker-end="url(#arrowRed2)" stroke-dasharray="3,3"/>
+                <text x="720" y="190" fill="#ff4444" font-size="9">Blocked</text>
+                <text x="720" y="203" fill="#ff4444" font-size="9">Exfil</text>
+
+                <circle cx="800" cy="260" r="25" fill="url(#gradRed2)" stroke="#ff4444" stroke-width="2"/>
+                <text x="800" y="260" text-anchor="middle" fill="#ff4444" font-size="20" font-weight="bold">X</text>
+                <text x="800" y="285" text-anchor="middle" fill="#ff4444" font-size="9">Unauthorized</text>
+                <text x="800" y="297" text-anchor="middle" fill="#ff4444" font-size="9">Data Ex-filtration</text>
+
+                <!-- Below: Audit Trail -->
+                <rect x="40" y="330" width="820" height="120" fill="rgba(74,144,217,0.1)" stroke="#4a90d9" stroke-width="2" rx="4"/>
+                <text x="55" y="350" fill="#4a90d9" font-size="11" font-weight="bold">Audit Trail & Compliance Log</text>
+
+                <g font-family="monospace" font-size="9" fill="#d0d0e0">
+                    <text x="60" y="375">[2026-03-29 14:23:45] Agent: kycagent-001 | Action: read_file | File: /sandbox/app-123.json | Status: ALLOWED</text>
+                    <text x="60" y="390">[2026-03-29 14:23:46] Agent: kycagent-001 | Action: network | Target: api.watchlist.internal | Status: ALLOWED | PII_redacted: 3_fields</text>
+                    <text x="60" y="405">[2026-03-29 14:23:47] Agent: kycagent-001 | Action: network | Target: exfil.external.com | Status: BLOCKED | Reason: not_in_allowlist</text>
+                    <text x="60" y="420">[2026-03-29 14:23:48] Agent: kycagent-001 | Action: output | Result: approved | Risk_score: 0.23 | Sent_to: compliance_queue</text>
+                </g>
+            </svg>
+
+            <h3>Policy Example: Financial Agent</h3>
+
+            <p>Here's what a policy for the KYC compliance use case might look like:</p>
+
+            <div class="code-block">
+name: kyc_compliance_agent
+spec:
+  filesystem:
+    allow_dirs:
+      - /sandbox/customer_apps
+      - /tmp
+    deny_patterns:
+      - /etc
+      - /root
+      - /home
+
+  network:
+    allow_hosts:
+      - watchlist.aml.internal
+      - database.kyc.internal
+    deny_patterns:
+      - "*.external"
+
+  privacy:
+    strip_headers:
+      - Authorization
+    redact_patterns:
+      - SSN: "\\d{3}-\\d{2}-\\d{4}"
+      - Passport: "[A-Z]{2}\\d{7}"
+      - Account: "[0-9]{16}"
+
+  audit:
+    log_all_actions: true
+    retention_days: 2555  # 7 years for compliance
+            </div>
+
+            <h3>Compliance Benefits</h3>
+
+            <p>OpenShell solves several compliance headaches at once:</p>
+
+            <div class="benefit-list">
+                <div class="benefit-item">
+                    <strong>Auditability</strong>
+                    <p>Every action the agent takes is logged with timestamps. Regulators can see exactly what data was accessed and when.</p>
+                </div>
+                <div class="benefit-item">
+                    <strong>Data Minimization</strong>
+                    <p>The policy enforces least privilege. The agent only sees the specific data it needs to complete its task.</p>
+                </div>
+                <div class="benefit-item">
+                    <strong>PII Protection</strong>
+                    <p>Sensitive data is automatically redacted from logs and audit trails, reducing breach exposure if logs are compromised.</p>
+                </div>
+                <div class="benefit-item">
+                    <strong>Incident Response</strong>
+                    <p>If an agent is compromised, the audit log shows exactly what it accessed. You can quantify the damage and respond quickly.</p>
+                </div>
+            </div>
+
+            <h3>Real-World Deployment Considerations</h3>
+
+            <p>Financial institutions care about three things when adopting new technology: risk, compliance, and cost.</p>
+
+            <p>Risk: OpenShell reduces risk by enforcing policies at the OS level. Even if the agent is compromised, it can't escape the sandbox. Compliance teams can sleep better knowing that data access is constrained and audited.</p>
+
+            <p>Compliance: Regulators like auditability. OpenShell provides detailed logs of every action. It simplifies SOX compliance (financial reporting controls), AML compliance (transaction monitoring), and GDPR compliance (data minimization).</p>
+
+            <p>Cost: Automation saves money by reducing manual review work. OpenShell lets you deploy agents confidently without hiring extra security staff to monitor them.</p>
+
+        </section>
+
+        <!-- SECTION 3: NemoClaw Security -->
+        <section id="section3">
+            <h2>Section 3: NemoClaw Security Integration</h2>
+
+            <div class="exec-summary">
+                <p>NemoClaw is a production framework that uses AI agents for complex workflows in high-risk environments. OpenShell provides the security layer that makes NemoClaw safe for enterprise use. NemoClaw agents run inside OpenShell's sandbox, where their filesystem access, network calls, and process execution are monitored and controlled at the kernel level.</p>
+            </div>
+
+            <h3>What is NemoClaw?</h3>
+
+            <p>NemoClaw is an open-source framework for building resilient, multi-step AI workflows. It's designed for long-running tasks like data pipeline orchestration, document processing, and complex decision-making.</p>
+
+            <p>Key features of NemoClaw:</p>
+            <ul>
+                <li>Multi-step workflows with retry logic and error handling</li>
+                <li>Tool calling and function composition</li>
+                <li>State persistence across steps</li>
+                <li>Integration with multiple LLM providers</li>
+            </ul>
+
+            <p>But NemoClaw itself doesn't enforce security. It assumes the agent runs in a trusted environment with trusted models. That's where OpenShell comes in.</p>
+
+            <h3>NemoClaw + OpenShell: A Powerful Combination</h3>
+
+            <p>When you run a NemoClaw agent inside OpenShell, you get:</p>
+
+            <ul>
+                <li>Filesystem Protection: The agent's file operations are intercepted and checked against policy before they happen. It can't read config files, private keys, or other sensitive files.</li>
+                <li>Network Isolation: All network calls go through the proxy. Only whitelisted endpoints are reachable. This prevents data exfiltration and command-and-control attacks.</li>
+                <li>Process Constraints: The agent can only spawn processes from a whitelist. It can't execute arbitrary binaries or shell commands.</li>
+                <li>Complete Audit Trail: Every step of the workflow is logged. You can replay the exact sequence of events that led to a particular outcome.</li>
+            </ul>
+
+            <h3>Security Interception Points</h3>
+
+            <p>NemoClaw agents interact with the system at three main points. OpenShell intercepts all of them:</p>
+
+            <h4>1. Network Policy (HTTP CONNECT Proxy)</h4>
+
+            <p>NemoClaw agents make API calls to fetch data, invoke other tools, and talk to LLM providers. OpenShell's proxy inspects all these calls:</p>
+            <ul>
+                <li>Checks the destination IP/hostname against the allow-list</li>
+                <li>Inspects headers and request bodies for credential leakage</li>
+                <li>Redacts PII before the request leaves the sandbox</li>
+                <li>Logs the call with timestamps and outcome</li>
+            </ul>
+
+            <h4>2. Filesystem Policy (Landlock LSM)</h4>
+
+            <p>NemoClaw agents read files (data files, config, model weights) and write files (logs, results, intermediate state). Landlock controls these operations:</p>
+            <ul>
+                <li>The agent can read from /sandbox (its input data) and write to /sandbox (its output)</li>
+                <li>System directories (/etc, /usr, /lib) are read-only or inaccessible</li>
+                <li>The agent can't modify binaries or system configuration</li>
+            </ul>
+
+            <h4>3. Process Execution (seccomp BPF)</h4>
+
+            <p>NemoClaw can spawn subprocesses (to run tools, invoke scripts, execute binaries). seccomp controls which processes are allowed:</p>
+            <ul>
+                <li>Only whitelisted binaries can be executed (e.g., /usr/bin/python3, /usr/bin/curl)</li>
+                <li>Privilege escalation attempts are blocked (ptrace, setuid)</li>
+                <li>Dangerous system calls are forbidden (mount, clone with CLONE_NEWUSER)</li>
+            </ul>
+
+            <div class="diagram-title">Figure 3: NemoClaw Security Interception Flows</div>
+            <svg width="900" height="450" viewBox="0 0 900 450" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="gradGreen" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#76b900;stop-opacity:0.15" />
+                        <stop offset="100%" style="stop-color:#76b900;stop-opacity:0.1" />
+                    </linearGradient>
+                    <linearGradient id="gradRed3" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#ff4444;stop-opacity:0.15" />
+                        <stop offset="100%" style="stop-color:#ff4444;stop-opacity:0.1" />
+                    </linearGradient>
+                    <marker id="arrowCheckmark" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                        <polygon points="0 0, 10 3, 0 6" fill="#76b900" />
+                    </marker>
+                    <marker id="arrowBlock" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                        <polygon points="0 0, 10 3, 0 6" fill="#ff4444" />
+                    </marker>
+                </defs>
+
+                <!-- NemoClaw Agent -->
+                <rect x="350" y="20" width="200" height="60" fill="#4a90d9" stroke="#76b900" stroke-width="2" rx="4"/>
+                <text x="450" y="50" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">NemoClaw Agent</text>
+
+                <!-- NemoClaw Policy Layer -->
+                <rect x="300" y="110" width="300" height="280" fill="none" stroke="#4a90d9" stroke-width="2" rx="4" stroke-dasharray="4,4"/>
+                <text x="320" y="130" fill="#4a90d9" font-size="10" font-weight="bold">NemoClaw Policy Layer</text>
+
+                <!-- Three policy sub-boxes -->
+                <!-- Network Policy -->
+                <rect x="320" y="150" width="80" height="60" fill="url(#gradGreen)" stroke="#76b900" stroke-width="2" rx="4"/>
+                <text x="360" y="170" text-anchor="middle" fill="#76b900" font-size="10" font-weight="bold">Network</text>
+                <text x="360" y="185" text-anchor="middle" fill="#e0e0e0" font-size="9">Policy</text>
+
+                <!-- Filesystem Policy -->
+                <rect x="410" y="150" width="80" height="60" fill="url(#gradGreen)" stroke="#76b900" stroke-width="2" rx="4"/>
+                <text x="450" y="170" text-anchor="middle" fill="#76b900" font-size="10" font-weight="bold">Filesystem</text>
+                <text x="450" y="185" text-anchor="middle" fill="#e0e0e0" font-size="9">Policy</text>
+
+                <!-- Intent Verification -->
+                <rect x="500" y="150" width="80" height="60" fill="url(#gradGreen)" stroke="#76b900" stroke-width="2" rx="4"/>
+                <text x="540" y="170" text-anchor="middle" fill="#76b900" font-size="10" font-weight="bold">Intent</text>
+                <text x="540" y="185" text-anchor="middle" fill="#e0e0e0" font-size="9">Verification</text>
+
+                <!-- Arrows from agent to policies -->
+                <line x1="400" y1="80" x2="360" y2="150" stroke="#76b900" stroke-width="2" marker-end="url(#arrowCheckmark)"/>
+                <line x1="450" y1="80" x2="450" y2="150" stroke="#76b900" stroke-width="2" marker-end="url(#arrowCheckmark)"/>
+                <line x1="500" y1="80" x2="540" y2="150" stroke="#76b900" stroke-width="2" marker-end="url(#arrowCheckmark)"/>
+
+                <!-- PATH A: ALLOWED (Green) -->
+                <!-- Entry point for allowed path -->
+                <circle cx="100" cy="200" r="12" fill="#4a90d9" stroke="#76b900" stroke-width="2"/>
+                <text x="100" y="205" text-anchor="middle" fill="#fff" font-size="9" font-weight="bold">1</text>
+                <text x="100" y="225" text-anchor="middle" fill="#76b900" font-size="9" font-weight="bold">Request</text>
+
+                <!-- Arrow to network policy -->
+                <path d="M 112 200 L 320 200" stroke="#76b900" stroke-width="2.5" marker-end="url(#arrowCheckmark)"/>
+
+                <!-- Pass network -->
+                <circle cx="360" cy="200" r="8" fill="#76b900"/>
+                <text x="360" y="204" text-anchor="middle" fill="#0f0f1e" font-size="8" font-weight="bold">✓</text>
+
+                <!-- Arrow to filesystem -->
+                <path d="M 400 200 L 410 200" stroke="#76b900" stroke-width="2.5" marker-end="url(#arrowCheckmark)"/>
+
+                <!-- Pass filesystem -->
+                <circle cx="450" cy="200" r="8" fill="#76b900"/>
+                <text x="450" y="204" text-anchor="middle" fill="#0f0f1e" font-size="8" font-weight="bold">✓</text>
+
+                <!-- Arrow to intent verification -->
+                <path d="M 490 200 L 500 200" stroke="#76b900" stroke-width="2.5" marker-end="url(#arrowCheckmark)"/>
+
+                <!-- Pass intent -->
+                <circle cx="540" cy="200" r="8" fill="#76b900"/>
+                <text x="540" y="204" text-anchor="middle" fill="#0f0f1e" font-size="8" font-weight="bold">✓</text>
+
+                <!-- Arrow to approved API -->
+                <path d="M 580 200 L 650 200" stroke="#76b900" stroke-width="2.5" marker-end="url(#arrowCheckmark)"/>
+
+                <!-- Approved API -->
+                <rect x="650" y="175" width="100" height="50" fill="#76b900" stroke="#76b900" stroke-width="2" rx="4" opacity="0.7"/>
+                <text x="700" y="205" text-anchor="middle" fill="#0f0f1e" font-size="11" font-weight="bold">✓ Approved</text>
+                <text x="700" y="219" text-anchor="middle" fill="#0f0f1e" font-size="9">API</text>
+
+                <!-- Label for allowed path -->
+                <text x="300" y="245" fill="#76b900" font-size="10" font-weight="bold">Path A: Allowed</text>
+
+                <!-- PATH B: BLOCKED (Red) -->
+                <!-- Entry point for blocked path -->
+                <circle cx="100" cy="310" r="12" fill="#ff4444" stroke="#ff4444" stroke-width="2"/>
+                <text x="100" y="315" text-anchor="middle" fill="#fff" font-size="9" font-weight="bold">2</text>
+                <text x="100" y="335" text-anchor="middle" fill="#ff4444" font-size="9" font-weight="bold">Blocked</text>
+
+                <!-- Arrow to network policy -->
+                <path d="M 112 310 L 320 310" stroke="#ff4444" stroke-width="2.5" marker-end="url(#arrowBlock)" stroke-dasharray="3,3"/>
+
+                <!-- BLOCKED at network policy -->
+                <circle cx="360" cy="310" r="15" fill="url(#gradRed3)" stroke="#ff4444" stroke-width="2"/>
+                <text x="360" y="315" text-anchor="middle" fill="#ff4444" font-size="14" font-weight="bold">X</text>
+
+                <!-- Arrow from blocked to operator console -->
+                <path d="M 375 310 L 650 380" stroke="#ff4444" stroke-width="2.5" marker-end="url(#arrowBlock)" stroke-dasharray="3,3"/>
+                <text x="500" y="340" fill="#ff4444" font-size="9">Alert</text>
+
+                <!-- Operator Console -->
+                <rect x="650" y="350" width="100" height="60" fill="url(#gradRed3)" stroke="#ff4444" stroke-width="2" rx="4"/>
+                <text x="700" y="370" text-anchor="middle" fill="#ff4444" font-size="11" font-weight="bold">Operator</text>
+                <text x="700" y="387" text-anchor="middle" fill="#ff4444" font-size="10" font-weight="bold">Console</text>
+                <text x="700" y="403" text-anchor="middle" fill="#ff4444" font-size="8">(Alert)</text>
+
+                <!-- Label for blocked path -->
+                <text x="300" y="360" fill="#ff4444" font-size="10" font-weight="bold">Path B: Blocked</text>
+
+            </svg>
+
+            <h3>Step-by-Step: What Happens When a NemoClaw Agent Tries to Access Something</h3>
+
+            <p><strong>Scenario 1: Allowed Access</strong></p>
+            <ol>
+                <li>NemoClaw agent needs to fetch customer data from an approved internal API.</li>
+                <li>The agent calls the API endpoint (e.g., api.company.internal/customer/123).</li>
+                <li>The HTTP proxy intercepts the request. It checks if api.company.internal is on the allow-list. It is.</li>
+                <li>The proxy examines the request headers and body. There are no exposed credentials (the Privacy Router stripped them).</li>
+                <li>Filesystem policy (Landlock) checks if the agent is allowed to cache the response. It can write to /sandbox, so it's allowed.</li>
+                <li>Intent verification confirms the access pattern matches the policy.</li>
+                <li>The request is sent to the API. The response comes back and is stored in /sandbox. The action is logged.</li>
+            </ol>
+
+            <p><strong>Scenario 2: Blocked Access</strong></p>
+            <ol>
+                <li>The agent is compromised and tries to send customer data to an external service (attacker.com).</li>
+                <li>The agent initiates a network connection to attacker.com:443.</li>
+                <li>The HTTP proxy intercepts the request and checks the allow-list. attacker.com is not approved.</li>
+                <li>The proxy blocks the connection and logs the violation.</li>
+                <li>An alert is sent to the operator console with details: timestamp, agent ID, destination, attempted action.</li>
+                <li>The operator can investigate the logs to understand what happened and whether the agent was compromised.</li>
+            </ol>
+
+            <h3>Policy Table: NemoClaw Agent Example</h3>
+
+            <table class="policy-table">
+                <thead>
+                    <tr>
+                        <th>Policy Area</th>
+                        <th>Allow</th>
+                        <th>Deny</th>
+                        <th>Purpose</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Filesystem</strong></td>
+                        <td>/sandbox, /tmp</td>
+                        <td>/etc, /root, /home, /usr/bin</td>
+                        <td>Prevent access to system files and config</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Network</strong></td>
+                        <td>api.company.internal, llm.provider.com</td>
+                        <td>*.external.com, 0.0.0.0/8 (internal networks)</td>
+                        <td>Restrict to business-approved endpoints only</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Processes</strong></td>
+                        <td>/usr/bin/python3, /usr/bin/curl, /usr/bin/jq</td>
+                        <td>bash, sh, all other binaries</td>
+                        <td>Prevent shell escapes and arbitrary code execution</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Privileges</strong></td>
+                        <td>User (uid 1000)</td>
+                        <td>Root (uid 0), sudo</td>
+                        <td>Prevent privilege escalation</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Why This Matters for NemoClaw Users</h3>
+
+            <p>NemoClaw is powerful because it orchestrates complex workflows. But power comes with risk. OpenShell reduces that risk without sacrificing capability:</p>
+
+            <ul>
+                <li>For Developers: You can build powerful NemoClaw agents without worrying about security. The sandbox enforces boundaries automatically.</li>
+                <li>For DevOps: You have clear policies that define what agents can and can't do. You can audit every action. You can respond quickly to incidents.</li>
+                <li>For Security Teams: You can monitor all agent activity in one place. Policies are declarative and easy to review. Compliance is automatic.</li>
+                <li>For Executives: You get the efficiency gains of AI automation without the compliance and security headaches. Regulators will be comfortable with OpenShell's auditability.</li>
+            </ul>
+
+        </section>
+
+        <!-- CONCLUSION -->
+        <section id="conclusion">
+            <h2>Conclusion & Strategic Recommendations</h2>
+
+            <h3>The Landscape: Why Now?</h3>
+
+            <p>Autonomous AI agents are here. They're becoming more capable every quarter. The question isn't whether to use them in your organization—it's whether you'll deploy them safely.</p>
+
+            <p>Prompt-based guardrails aren't sufficient. They break under pressure. OpenShell provides a fundamentally different approach: enforcement at the OS kernel level, policies that can't be bypassed by compromised models, and complete auditability for compliance.</p>
+
+            <h3>Key Takeaways</h3>
+
+            <div class="benefit-list">
+                <div class="benefit-item">
+                    <strong>Defense in Depth</strong>
+                    <p>Three independent kernel enforcement layers (filesystem, system calls, network) ensure no single compromise grants full access.</p>
+                </div>
+                <div class="benefit-item">
+                    <strong>Out-of-Process Enforcement</strong>
+                    <p>Security decisions happen outside the agent's control. The agent can't override policy—the kernel enforces it.</p>
+                </div>
+                <div class="benefit-item">
+                    <strong>Compliance Ready</strong>
+                    <p>Complete audit trails, data minimization, PII redaction, and policy-driven access meet SOX, AML, GDPR, and other regulatory requirements.</p>
+                </div>
+                <div class="benefit-item">
+                    <strong>Enterprise Deployable</strong>
+                    <p>Works with existing infrastructure (Linux kernel, standard tooling). No custom OS patches or exotic dependencies.</p>
+                </div>
+            </div>
+
+            <h3>Recommended Implementation Phases</h3>
+
+            <div class="recommendation">
+                <h4>Phase 1: Pilot (Weeks 1–4)</h4>
+                <ol>
+                    <li>Set up OpenShell in a test environment with non-critical data.</li>
+                    <li>Deploy a simple agent (data retrieval, report generation) inside the sandbox.</li>
+                    <li>Write and test policies for the agent's use case.</li>
+                    <li>Validate that the sandbox enforces the expected boundaries.</li>
+                    <li>Team learns the operational model: policy updates, incident response, log analysis.</li>
+                </ol>
+            </div>
+
+            <div class="recommendation">
+                <h4>Phase 2: Internal Use (Weeks 5–12)</h4>
+                <ol>
+                    <li>Deploy agents for internal use cases: data pipeline automation, report generation, internal analytics.</li>
+                    <li>Develop standard policies for different agent types.</li>
+                    <li>Integrate OpenShell into your CI/CD pipeline (agents are tested with their policies).</li>
+                    <li>Train operations and security teams on monitoring and incident response.</li>
+                    <li>Integrate audit logs with your SIEM for centralized monitoring.</li>
+                </ol>
+            </div>
+
+            <div class="recommendation">
+                <h4>Phase 3: Customer-Facing Deployment (Weeks 13–24)</h4>
+                <ol>
+                    <li>Deploy agents that handle customer data: KYC/AML agents, fraud detection, compliance reporting.</li>
+                    <li>Establish formal policies with legal and compliance teams.</li>
+                    <li>Document the security controls for auditors and regulators.</li>
+                    <li>Implement automated compliance reporting: dashboards showing policy adherence, audit volumes, incident counts.</li>
+                    <li>Conduct security review with internal and external auditors.</li>
+                </ol>
+            </div>
+
+            <h3>Success Metrics</h3>
+
+            <table class="policy-table">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Metric</th>
+                        <th>Target</th>
+                        <th>Why It Matters</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Security</strong></td>
+                        <td>Policy violations blocked (monthly)</td>
+                        <td>Zero successful exfiltration attempts</td>
+                        <td>Proves the sandbox is preventing unauthorized access</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Compliance</strong></td>
+                        <td>Audit log completeness</td>
+                        <td>100% of agent actions logged</td>
+                        <td>Supports regulatory evidence during audits</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Operations</strong></td>
+                        <td>Mean time to incident resolution (MTTR)</td>
+                        <td>&lt;1 hour for policy violations</td>
+                        <td>Shows you can respond quickly to issues</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Business</strong></td>
+                        <td>Agent-driven cost reduction</td>
+                        <td>20–40% reduction in manual work for automated processes</td>
+                        <td>Justifies the investment in OpenShell infrastructure</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Risk Assessment</h3>
+
+            <p>No system is risk-free. Here are the main risks to consider:</p>
+
+            <div class="risk-item">
+                <strong>Kernel Vulnerabilities:</strong> OpenShell relies on the Linux kernel's security modules (Landlock, seccomp). If a kernel vulnerability is discovered in one of these modules, OpenShell's security could be compromised. Mitigation: Keep your kernel up to date, subscribe to security advisories, and have an incident response plan.
+            </div>
+
+            <div class="risk-item">
+                <strong>Policy Misconfiguration:</strong> If policies are written too loosely (e.g., allow-listing too many endpoints), the sandbox loses effectiveness. Mitigation: Use policy templates, code review for policy changes, and automated testing of policies.
+            </div>
+
+            <div class="risk-item">
+                <strong>Zero-Day Exploits:</strong> A sophisticated attacker might find a way to exploit a combination of kernel vulnerabilities, policy gaps, and application flaws to escape the sandbox. Mitigation: Assume sandboxes can be broken. Design your system so that even if an agent escapes, it can't cause catastrophic damage. Use additional defenses (network segmentation, rate limiting on APIs, alerting on unusual patterns).
+            </div>
+
+            <div class="risk-item">
+                <strong>Operational Overhead:</strong> Managing policies, monitoring logs, and responding to incidents requires skilled staff. Mitigation: Invest in automation (policy templates, automated alerting, incident playbooks). Consider managed OpenShell services if you don't have internal expertise.
+            </div>
+
+            <h3>Final Thoughts</h3>
+
+            <p>AI agents are the next wave of enterprise automation. But with great power comes great responsibility. Organizations that deploy them thoughtfully—with strong security controls, clear policies, and compliance-ready auditing—will gain massive competitive advantages. Those that cut corners will face breaches, regulatory fines, and loss of customer trust.</p>
+
+            <p>OpenShell isn't a silver bullet. It's a critical component of a defense-in-depth strategy. Use it alongside network segmentation, API rate limiting, employee training, and incident response playbooks. Together, these controls make AI agents safe for enterprise use.</p>
+
+            <p>The companies that get this right will move faster than their competitors. They'll automate what others can't. They'll serve customers better. And they'll sleep easier knowing their AI systems are secure by design.</p>
+
+        </section>
+
+    </main>
+
+    <footer id="footer">
+        <div class="sources">
+            <h3>References & Further Reading</h3>
+            <ul>
+                <li>Linux Security Modules (LSM) Documentation: https://www.kernel.org/doc/html/latest/security/lsm.html</li>
+                <li>Landlock: Unprivileged Sandboxing - https://www.kernel.org/doc/html/latest/userspace-api/landlock.html</li>
+                <li>seccomp: Secure Computing Mode - https://man7.org/linux/man-pages/man2/seccomp.2.html</li>
+                <li>Open Policy Agent (OPA): Policy as Code - https://www.openpolicyagent.org/</li>
+                <li>NIST Cybersecurity Framework: https://www.nist.gov/cyberframework</li>
+                <li>SOX Compliance (Sarbanes-Oxley Act of 2002): SEC documentation</li>
+                <li>AML/KYC Standards: FATF Recommendations on Anti-Money Laundering</li>
+                <li>GDPR Data Protection Regulation: European Commission</li>
+            </ul>
+        </div>
+
+        <div class="footer-meta">
+            <p><strong>Document Information:</strong></p>
+            <p>Date: March 2026 | Prepared for: Executive Technology Leadership | Classification: Technical Review</p>
+            <p>This report represents a comprehensive technical and strategic assessment of NVIDIA OpenShell for securing autonomous AI agents. Recommendations are based on current architecture and threat landscape assessment.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
